@@ -1,5 +1,4 @@
-#@[Link(ldflags: "`command -v pkg-config > /dev/null && pkg-config --libs libgexiv2 2> /dev/null|| printf %s '-glibc -lgexiv2'`")]
-@[Link("gexiv2")]
+@[Link(ldflags: "`command -v pkg-config > /dev/null && pkg-config --libs gexiv2 2> /dev/null|| printf %s`")]
 lib LibGEXIV2
   alias GQuark = Guint32
   alias GType = Gsize
@@ -195,6 +194,7 @@ lib LibGEXIV2
     flush : StreamFlush
   end
 
+  #FIXME:Converted Type aliases from typedefs are not worked.
   type GBytes = Void*
   type GData = Void*
   #type GError = X_GError
