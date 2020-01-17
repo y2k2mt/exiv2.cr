@@ -16,7 +16,7 @@ Extracting EXIF,IPTC and XMP metadata in photo and video files.
 
    ```yaml
    dependencies:
-     exiv2.cr:
+     exiv2:
        github: y2k2mt/exiv2.cr
    ```
 
@@ -25,14 +25,11 @@ Extracting EXIF,IPTC and XMP metadata in photo and video files.
 ## Usage
 
 ```crystal
-require "exiv2.cr"
+require "exiv2"
+
+metadata = Exiv2::Metadata.new "/somewhere/image.jpg"
+metadata.model # e.g. "Canon EOS 40D"
 ```
-
-TODO: Write usage instructions here
-
-## Development
-
-TODO: Write development instructions here
 
 ## Contributing
 
