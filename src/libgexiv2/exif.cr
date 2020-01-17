@@ -194,18 +194,18 @@ lib LibGEXIV2
     flush : StreamFlush
   end
 
-  #FIXME:Converted Type aliases from typedefs are not worked.
+  # FIXME:Converted Type aliases from typedefs are not worked.
   type GBytes = Void*
   type GData = Void*
-  #type GError = X_GError
-  #type GExiv2Metadata = X_GExiv2Metadata
+  # type GError = X_GError
+  # type GExiv2Metadata = X_GExiv2Metadata
   type GExiv2MetadataPrivate = Void*
-  #type GExiv2PreviewImage = X_GExiv2PreviewImage
+  # type GExiv2PreviewImage = X_GExiv2PreviewImage
   type GExiv2PreviewImagePrivate = Void*
-  #type GExiv2PreviewProperties = X_GExiv2PreviewProperties
+  # type GExiv2PreviewProperties = X_GExiv2PreviewProperties
   type GExiv2PreviewPropertiesPrivate = Void*
-  #type GObject = X_GObject
-  #type GTypeClass = X_GTypeClass
-  #type GTypeInstance = X_GTypeInstance
-  #type ManagedStreamCallbacks = X_ManagedStreamCallbacks
+  # type GObject = X_GObject
+  # type GTypeClass = X_GTypeClass
+  # type GTypeInstance = X_GTypeInstance
+  # type ManagedStreamCallbacks = X_ManagedStreamCallbacks
 end
