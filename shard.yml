@@ -1,13 +1,14 @@
 name: exiv2
 version: 0.1.0
 
-before_install:
-  - sudo apt-get update
-  - sudo apt-get -y install libgexiv2-dev
-
 authors:
   - y2k2mt <y2.k2mt@gmail.com>
 
 crystal: 0.32.1
 
 license: MIT
+
+development_dependencies:
+  ameba:
+    github: crystal-ameba/ameba
+    version: ~> 0.11.0
