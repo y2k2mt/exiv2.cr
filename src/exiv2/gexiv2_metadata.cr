@@ -23,12 +23,9 @@ module Exiv2
       Fraction.new nom_p.value, den_p.value
     end
 
-    # FIXME
-    #    def exif_tags
-    #      s = Slice(UInt8).new LibGEXIV2.gexiv2_metadata_get_exif_tags(@metadata).value, 8192
-    #      ss = String.new s.reject { |u| u == 0 }.to_unsafe
-    #      ss.split('!').reduce([] of String) { |memo, s| memo += s.split('1') }
-    #    end
+    def exif_tags
+      string_array_tag_proc { Slice(Pointer(UInt8)).new LibGEXIV2.gexiv2_metadata_get_exif_tags(@metadata), 512 }
+    end
 
     def exposure_time : Fraction
       nom, den = 0, 0
@@ -58,6 +55,10 @@ module Exiv2
       float_tag_proc { |f| LibGEXIV2.gexiv2_metadata_get_gps_altitude @metadata, f }
     end
 
+    def ipct_tags
+      string_array_tag_proc { Slice(Pointer(UInt8)).new LibGEXIV2.gexiv2_metadata_get_iptc_tags(@metadata), 512 }
+    end
+
     def iso_speed : Int32
       LibGEXIV2.gexiv2_metadata_get_iso_speed @metadata
     end
@@ -68,6 +69,38 @@ module Exiv2
 
     def pixel_width : Int32
       LibGEXIV2.gexiv2_metadata_get_pixel_width @metadata
+    end
+
+    def mime_type : String?
+      string_tag_proc { LibGEXIV2.gexiv2_metadata_get_mime_type @metadata }
+    end
+
+    def supports_exif : Bool
+      bool_tag LibGEXIV2.gexiv2_metadata_get_supports_exif @metadata
+    end
+
+    def supports_iptc : Bool
+      bool_tag LibGEXIV2.gexiv2_metadata_get_supports_tptc @metadata
+    end
+
+    def supports_xmp : Bool
+      bool_tag LibGEXIV2.gexiv2_metadata_get_supports_xmp @metadata
+    end
+
+    def tag_description(tag_name : String) : String?
+      string_tag_proc { LibGEXIV2.gexiv2_metadata_get_tag_description tag_name }
+    end
+
+    def bool_tag(b : LibC::Int)
+      b == 1 ? true : false
+    end
+
+    private def string_array_tag_proc
+      pointers = yield
+      pointers
+        .take_while { |p| p.address != 0x51 }
+        .reject { |p| p.null? }
+        .map { |p| String.new p }
     end
   end
 end
