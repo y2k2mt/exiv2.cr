@@ -9,15 +9,15 @@ module Exiv2::Tags
       Below
     end
 
-    def gps_latitude_ref
+    def gps_latitude_ref : String?
       string_tag "Exif.GPSInfo.GPSLatitudeRef"
     end
 
-    def gps_longitude_ref
+    def gps_longitude_ref : String?
       string_tag "Exif.GPSInfo.GPSLongitudeRef"
     end
 
-    def gps_altitude_ref
+    def gps_altitude_ref : AltitudeRef
       altitude_ref = string_tag "Exif.GPSInfo.GPSAltitudeRef"
       if altitude_ref == "1"
         AltitudeRef::Below

@@ -4,23 +4,12 @@ module Exiv2
   module GExiv2Metadata
     include TagExtractor
 
-    struct Fraction
-      getter numerator, denominator
-
-      def initialize(@numerator : Int32, @denominator : Int32)
-      end
-    end
-
     def comment : String?
       string_tag_proc { LibGEXIV2.gexiv2_metadata_get_comment @metadata }
     end
 
     def exif_tag_rational(name : String) : Fraction
-      nom, den = 0, 0
-      nom_p = pointerof(nom)
-      den_p = pointerof(den)
-      LibGEXIV2.gexiv2_metadata_get_exif_tag_rational @metadata, name, nom_p, den_p
-      Fraction.new nom_p.value, den_p.value
+      fraction { |nom, den| LibGEXIV2.gexiv2_metadata_get_exif_tag_rational @metadata, name, nom, den }
     end
 
     def exif_tags
@@ -28,11 +17,7 @@ module Exiv2
     end
 
     def exposure_time : Fraction
-      nom, den = 0, 0
-      nom_p = pointerof(nom)
-      den_p = pointerof(den)
-      LibGEXIV2.gexiv2_metadata_get_exposure_time @metadata, nom_p, den_p
-      Fraction.new nom_p.value, den_p.value
+      fraction { |nom, den| LibGEXIV2.gexiv2_metadata_get_exposure_time @metadata, nom, den }
     end
 
     def fnumber
@@ -89,18 +74,6 @@ module Exiv2
 
     def tag_description(tag_name : String) : String?
       string_tag_proc { LibGEXIV2.gexiv2_metadata_get_tag_description tag_name }
-    end
-
-    def bool_tag(b : LibC::Int)
-      b == 1 ? true : false
-    end
-
-    private def string_array_tag_proc
-      pointers = yield
-      pointers
-        .take_while { |p| p.address != 0x51 }
-        .reject { |p| p.null? }
-        .map { |p| String.new p }
     end
   end
 end
