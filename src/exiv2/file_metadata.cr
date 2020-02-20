@@ -4,14 +4,18 @@ module Exiv2
   module FileMetadata
     def initialize(file_path : String)
       if !File.exists?(file_path)
-        raise "File #{file_path} not found"
+        raise Errno.new("Error opening file '#{file_path}'")
       end
       @metadata = LibGEXIV2.gexiv2_metadata_new
-      ne = LibGEXIV2::GError.new
-      err = pointerof(ne)
-      LibGEXIV2.gexiv2_metadata_open_path @metadata, file_path, pointerof(err)
-      if err && (message = err.value.message) && !message.null?
-        raise String.new message
+      error = nil
+      result = LibGEXIV2.gexiv2_metadata_open_path @metadata, file_path, error
+      case result
+      when 0
+        raise Exception.new "Failed to load image metadata for '#{file_path}'"
+      else
+        if error && (message = error.value.message) && !message.null?
+          raise Exception.new String.new message
+        end
       end
     end
 
