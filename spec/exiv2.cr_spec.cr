@@ -31,11 +31,15 @@ describe Exiv2::Metadata do
     metadata.close
   end
 
-  expect_raises(Errno, "Error opening file 'spec/not_avairable_file'") do
-    metadata = Exiv2::Metadata.new "spec/not_avairable_file"
+  it "not work because file not found" do
+    expect_raises(Errno, "Error opening file 'spec/not_avairable_file'") do
+      Exiv2::Metadata.new "spec/not_avairable_file"
+    end
   end
 
-  expect_raises(Exception, "Failed to load image metadata for 'spec/invalid_format.img'") do
-    metadata = Exiv2::Metadata.new "spec/invalid_format.img"
+  it "not work because file has no image file format" do
+    expect_raises(Exception, "Failed to load image metadata for 'spec/invalid_format.img'") do
+      Exiv2::Metadata.new "spec/invalid_format.img"
+    end
   end
 end

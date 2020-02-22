@@ -11,9 +11,11 @@ module Exiv2
       result = LibGEXIV2.gexiv2_metadata_open_path @metadata, file_path, error
       case result
       when 0
+        self.close
         raise Exception.new "Failed to load image metadata for '#{file_path}'"
       else
         if error && (message = error.value.message) && !message.null?
+          self.close
           raise Exception.new String.new message
         end
       end
