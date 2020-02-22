@@ -1,6 +1,9 @@
 # exiv2.cr
 
-Crystal binding to [libgexiv2](https://wiki.gnome.org/Projects/gexiv2)
+[![Build Status](https://travis-ci.org/y2k2mt/exiv2.cr.svg?branch=master)](https://travis-ci.org/y2k2mt/exiv2.cr)
+[![Releases](https://img.shields.io/github/release/y2k2mt/exiv2.cr.svg?maxAge=360)](https://github.com/y2k2mt/exiv2.cr/releases)
+
+Crystal binding to [libgexiv2](https://wiki.gnome.org/Projects/gexiv2).
 
 Extracting EXIF,IPTC and XMP metadata in photo and video files.
 
@@ -18,6 +21,7 @@ Extracting EXIF,IPTC and XMP metadata in photo and video files.
    dependencies:
      exiv2:
        github: y2k2mt/exiv2.cr
+       version: 0.1.0
    ```
 
 1. Run `shards install`
