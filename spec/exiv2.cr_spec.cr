@@ -32,14 +32,22 @@ describe Exiv2::Metadata do
   end
 
   it "not work because file not found" do
-    expect_raises(Errno, "Error opening file 'spec/not_avairable_file'") do
+    begin
       Exiv2::Metadata.new "spec/not_avairable_file"
+    rescue e : Exiv2::Error
+      e.message.should eq("spec/not_avairable_file: Failed to open the data source: No such file or directory (errno = 2)")
+      e.code.should eq(9)
+      e.domain.should eq(61)
     end
   end
 
   it "not work because file has no image file format" do
-    expect_raises(Exception, "Failed to load image metadata for 'spec/invalid_format.img'") do
+    begin
       Exiv2::Metadata.new "spec/invalid_format.img"
+    rescue e : Exiv2::Error
+      e.message.should eq("spec/invalid_format.img: The file contains data of an unknown image type")
+      e.code.should eq(11)
+      e.domain.should eq(61)
     end
   end
 end
