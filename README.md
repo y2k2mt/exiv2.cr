@@ -21,7 +21,7 @@ Extracting EXIF,IPTC and XMP metadata in photo and video files.
    dependencies:
      exiv2:
        github: y2k2mt/exiv2.cr
-       version: 0.1.0
+       version: 0.1.1
    ```
 
 1. Run `shards install`
