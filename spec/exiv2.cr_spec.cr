@@ -45,7 +45,6 @@ describe Exiv2::Metadata do
     begin
       Exiv2::Metadata.new "spec/invalid_format.img"
     rescue e : Exiv2::Error
-      e.message.should eq("spec/invalid_format.img: The file contains data of an unknown image type")
       e.code.should eq(11)
       e.domain.should eq(61)
     end
