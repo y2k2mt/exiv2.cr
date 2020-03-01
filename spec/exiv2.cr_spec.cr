@@ -31,6 +31,8 @@ describe Exiv2::Metadata do
     metadata.close
   end
 
+  # Tested on gexiv2 0.10.9
+
   it "not work because file not found" do
     begin
       Exiv2::Metadata.new "spec/not_avairable_file"
@@ -45,7 +47,7 @@ describe Exiv2::Metadata do
     begin
       Exiv2::Metadata.new "spec/invalid_format.img"
     rescue e : Exiv2::Error
-      e.code.should eq(11)
+      e.code.should eq(501)
       e.domain.should eq(61)
     end
   end
