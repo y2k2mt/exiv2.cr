@@ -3,20 +3,15 @@ require "./tags/*"
 module Exiv2
   module FileMetadata
     def initialize(file_path : String)
-      if !File.exists?(file_path)
-        raise Errno.new("Error opening file '#{file_path}'")
-      end
       @metadata = LibGEXIV2.gexiv2_metadata_new
-      error = nil
-      result = LibGEXIV2.gexiv2_metadata_open_path @metadata, file_path, error
-      case result
-      when 0
+      error = Pointer(LibGEXIV2::GError).null
+      result = LibGEXIV2.gexiv2_metadata_open_path @metadata, file_path, pointerof(error)
+      if result == 0
         self.close
-        raise Exception.new "Failed to load image metadata for '#{file_path}'"
-      else
-        if error && (message = error.value.message) && !message.null?
-          self.close
-          raise Exception.new String.new message
+        if !error.null?
+          raise Exiv2::Error.new error.value
+        else
+          raise Exception.new "Unknown error: '#{file_path}'"
         end
       end
     end

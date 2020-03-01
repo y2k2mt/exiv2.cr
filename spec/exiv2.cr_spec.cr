@@ -31,15 +31,24 @@ describe Exiv2::Metadata do
     metadata.close
   end
 
+  # Tested on gexiv2 0.10.9
+
   it "not work because file not found" do
-    expect_raises(Errno, "Error opening file 'spec/not_avairable_file'") do
+    begin
       Exiv2::Metadata.new "spec/not_avairable_file"
+    rescue e : Exiv2::Error
+      e.message.should eq("spec/not_avairable_file: Failed to open the data source: No such file or directory (errno = 2)")
+      e.code.should eq(9)
+      e.domain.should eq(61)
     end
   end
 
   it "not work because file has no image file format" do
-    expect_raises(Exception, "Failed to load image metadata for 'spec/invalid_format.img'") do
+    begin
       Exiv2::Metadata.new "spec/invalid_format.img"
+    rescue e : Exiv2::Error
+      e.code.should eq(501)
+      e.domain.should eq(61)
     end
   end
 end
